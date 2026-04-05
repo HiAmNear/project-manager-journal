@@ -22,7 +22,10 @@ $$T_{milestone} = \sum (T_{deep\_dive} \times W_d) + T_{mapping}$$
     * $W_d = 0.4$: Các Section tiếp theo trong cùng một Chương (Khả năng tái sử dụng Context cao).
     * $W_d = 1.5$: Các Section có độ sâu cấu trúc > 5 cấp (Rủi ro logic lồng ghép, cần audit kỹ).
 * **$T_{mapping}$**: Thời gian bắt buộc để Mapping yêu cầu khách hàng vào tài liệu và thiết lập Data Test mẫu (thường dao động từ $4h - 8h$ tùy quy mô).
-
+* **$T_{mapping}$ (Thời gian ánh xạ hệ thống)**: 
+    Được tính dựa trên số lượng Yêu cầu ($N_{req}$) và số lượng Điểm chạm thực tế trong tài liệu ($N_{intersect}$).
+    $$T_{mapping} = (N_{req} \times 0.15h) + (N_{intersect} \times 0.25h)$$
+    *Ý nghĩa: Đảm bảo mọi yêu cầu của khách hàng đều được định vị chính xác trong 8000 dòng tài liệu trước khi phân tích sâu.*
 ---
 
 ## 3. Case Study: Ước lượng cho 21 Sections (11 Requirements)
@@ -31,15 +34,16 @@ Giả định thực tế cho một tập hồ sơ 8000 dòng với các Section
 
 ### Phân rã kỹ thuật:
 
-| Cụm Logic (Chapters) | Số mục | Cấp lồng (TB) | Trọng số ($W_d$) | Công thức tính ($T_{deep\_dive} \times W_d$) | Kết quả (Giờ) |
+| Section Index | Số mục | Cấp lồng | Trọng số ($W_d$) | Công thức tính ($T_{deep\_dive} \times W_d$) | Kết quả (Giờ) |
 | :--- | :---: | :---: | :---: | :--- | :---: |
-| **Chương 5 & 7** | 2 | 2 | 1.0 | $2 \times (2 \times 0.25h) \times 1.0$ | 1.0 |
-| **Chương 8.1 & 8.3** | 2 | 2 | 1.0 | $2 \times (2 \times 0.25h) \times 1.0$ | 1.0 |
-| **Chương 8.5 (Deep-dive)** | 1 | 4 | 1.5 | $1 \times (4 \times 0.25h) \times 1.5$ | 1.5 |
-| **Chương 8.5 (Vệ tinh)** | 5 | 2 | 0.4 | $5 \times (2 \times 0.25h) \times 0.4$ | 1.0 |
-| **Chương 8.8** | 2 | 3 | 1.0 | $2 \times (3 \times 0.25h) \times 1.0$ | 1.5 |
-| **Mapping & Analysis** | - | - | - | Thiết lập môi trường & Mapping sơ bộ | 4.0 |
-| **TỔNG CỘNG ($T_{milestone}$)** | | | | | **10.0 Giờ** |
+| **5.4 & 7.5** | 2 | 2 | 1.0 | $2 \times (2 \times 0.25h) \times 1.0$ | 1.0 |
+| **8.1.1 & 8.3.28** | 2 | 3 | 1.0 | $2 \times (3 \times 0.25h) \times 1.0$ | 1.5 |
+| **8.5.2.2.3 (Deep)** | 1 | 5 | 1.5 | $1 \times (5 \times 0.25h) \times 1.5$ | 1.88 |
+| **8.5.1, 8.5.2, 8.5.3** | 3 | 3 | 0.4 | $3 \times (3 \times 0.25h) \times 0.4$ | 0.9 |
+| **8.8.2.5** | 1 | 4 | 1.0 | $1 \times (4 \times 0.25h) \times 1.0$ | 1.0 |
+| **8.8.3** | 1 | 3 | 0.4 | $1 \times (3 \times 0.25h) \times 0.4$ | 0.3 |
+| **Mapping & Analysis** | - | - | - | Mapping 11 Req vào 21 Sections | 4.0 |
+| **TỔNG CỘNG ($T_{milestone}$)** | | | | | **~10.5 Giờ** |
 
 ---
 
