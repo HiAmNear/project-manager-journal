@@ -53,3 +53,54 @@ Giả định thực tế cho một tập hồ sơ 8000 dòng với các Section
 1.  **Tính khoa học**: Con số 1.5 ngày không phải là ước lượng cảm tính mà dựa trên cấu trúc phân tầng ($Hierarchy\ Depth$) của tài liệu.
 2.  **Quản trị rủi ro**: Việc dành 10 giờ nghiên cứu giúp loại bỏ rủi ro "báo láo" Milestone. Nếu ép thời gian nghiên cứu, sai số Milestone có thể lên đến 200%.
 3.  **Tính sẵn sàng**: Sau 1.5 ngày, team đã có sẵn Data mẫu và hiểu rõ luồng đi của biến số qua các tầng If-Else, giúp giai đoạn Coding diễn ra trơn tru, hạn chế tối đa việc sửa lỗi (Bug fixing) về sau.
+
+# Phase 2: Environment Readiness & Data Prototyping Framework
+
+## 1. Mục tiêu (Objective)
+Sau khi hoàn thành Phase 1 (Discovery & Milestone), Phase 2 tập trung vào việc hiện thực hóa các kịch bản kiểm thử (Test Scenarios). Mục tiêu là đảm bảo mọi "điểm chạm" logic trong tài liệu đều có dữ liệu đối soát thực tế trước khi bắt đầu giai đoạn Coding.
+
+---
+
+## 2. Công thức Tính thời gian Tái hiện (Deep-Dive Setup Formula)
+
+Thời gian tái hiện ($T_{reproduce}$) được tính dựa trên độ sâu của cấu trúc nhánh dữ liệu và các ràng buộc hệ thống (Constraints).
+
+$$T_{reproduce} = \sum (N_{root} \times T_{base}) + \sum (N_{deep} \times T_{base} \times D)$$
+
+### Trong đó:
+* **$N_{root}$**: Các Section có cấu trúc nông (Cấp 1-3). Logic đơn giản, dễ tạo Data.
+* **$N_{deep}$**: Các Section có cấu trúc sâu (Cấp > 4). Logic lồng ghép, nhiều điều kiện ràng buộc.
+* **$T_{base}$**: Thời gian cơ bản để thiết lập 1 bộ Data mẫu (Khuyên dùng: $1.0h$).
+* **$D$ (Depth Factor)**: Hệ số nhân độ sâu (Gánh nặng của việc truy vết điều kiện If-Else):
+    * Cấp 4: $D = 1.25$
+    * Cấp 5: $D = 1.5$
+    * Cấp 6: $D = 1.65$
+    * Cấp 7: $D = 1.75$
+
+---
+
+## 3. Case Study: Ước lượng thực tế cho 21 Sections
+
+Dựa trên danh sách 21 điểm ảnh hưởng (Impact Points) phân bổ từ Chương 5 đến Chương 8.8:
+
+### Phân rã định lượng:
+
+| Phân nhóm Section | Số lượng | Công thức ($T_{base} = 1.0h$) | Kết quả |
+| :--- | :---: | :--- | :--- |
+| **Nhánh nông (Cấp 2-3)** | 8 | $8 \times 1.0h$ | 8.0h |
+| **Nhánh trung bình (Cấp 4)** | 1 | $1 \times 1.0h \times 1.25$ | 1.25h |
+| **Nhánh sâu (Cấp 5)** | 1 | $1 \times 1.0h \times 1.5$ | 1.5h |
+| **Nhánh cực sâu (Cấp 7)** | 1 | $1 \times 1.0h \times 1.75$ | 1.75h |
+
+**=> Tổng cộng ($T_{reproduce}$): ~12.5 Giờ làm việc.**
+
+---
+
+## 4. Ý nghĩa chiến lược (Strategic Value)
+
+1. **Khắc phục sự mơ hồ**: Việc dành ~12.5h để setup data giúp làm sáng tỏ các điểm "mù" trong tài liệu mà việc đọc thuần túy không thể phát hiện.
+2. **Loại bỏ "Bottleneck"**: Khi Junior bắt đầu code, họ đã có sẵn môi trường và data chuẩn. Điều này triệt tiêu thời gian chờ đợi (Idle time) và giảm thiểu rủi ro lỗi Logic cha (Parent Logic errors).
+3. **Chỉ số Seniority**: Khả năng định lượng thời gian setup dựa trên cấu trúc lồng ($Depth$) chứng minh năng lực quản trị rủi ro và am hiểu hệ thống sâu sắc của người lập kế hoạch.
+
+---
+*Documented by Nhat Ma*
