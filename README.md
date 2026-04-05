@@ -31,17 +31,17 @@ Giả định thực tế cho một tập hồ sơ 8000 dòng với các Section
 
 ### Phân rã kỹ thuật:
 
-1.  **Cụm Chương 5 & 7 (Context độc lập):**
-    * $2\ mục \times 2\ cấp \times 0.25h \times 1.0 = 1.0h$
-2.  **Cụm Chương 8.1 & 8.3 (Logic rời rạc):**
-    * $2\ mục \times 2\ cấp \times 0.25h \times 1.0 = 1.0h$
-3.  **Cụm Chương 8.5 (Trọng tâm - 6 mục liên đới):**
-    * Mục sâu nhất (4 cấp): $4 \times 0.25h \times 1.5\ (Hệ\ số\ sâu) = 1.5h$
-    * 5 mục vệ tinh: $5 \times 2\ cấp \times 0.25h \times 0.4\ (Hệ\ số\ cùng\ chương) = 1.0h$
-4.  **Cụm Chương 8.8 (Cấu trúc trung bình):**
-    * $2\ mục \times 3\ cấp \times 0.25h \times 1.0 = 1.5h$
-5.  **Mapping & Data Setup (Bắt buộc):**
-    * Thiết lập môi trường và tạo record mẫu cho 11 Requirements: **4.0h**
+| Cụm Logic (Chapters) | Số mục | Cấp lồng (TB) | Trọng số ($W_d$) | Công thức tính ($T_{deep\_dive} \times W_d$) | Kết quả (Giờ) |
+| :--- | :---: | :---: | :---: | :--- | :---: |
+| **Chương 5 & 7** | 2 | 2 | 1.0 | $2 \times (2 \times 0.25h) \times 1.0$ | 1.0 |
+| **Chương 8.1 & 8.3** | 2 | 2 | 1.0 | $2 \times (2 \times 0.25h) \times 1.0$ | 1.0 |
+| **Chương 8.5 (Deep-dive)** | 1 | 4 | 1.5 | $1 \times (4 \times 0.25h) \times 1.5$ | 1.5 |
+| **Chương 8.5 (Vệ tinh)** | 5 | 2 | 0.4 | $5 \times (2 \times 0.25h) \times 0.4$ | 1.0 |
+| **Chương 8.8** | 2 | 3 | 1.0 | $2 \times (3 \times 0.25h) \times 1.0$ | 1.5 |
+| **Mapping & Analysis** | - | - | - | Thiết lập môi trường & Mapping sơ bộ | 4.0 |
+| **TỔNG CỘNG ($T_{milestone}$)** | | | | | **10.0 Giờ** |
+
+---
 
 ### Kết quả cuối cùng:
 **Tổng thời gian ($T_{milestone}$): ~10 Giờ làm việc (Tương đương 1.5 - 2 ngày công).**
