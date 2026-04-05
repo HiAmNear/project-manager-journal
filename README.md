@@ -57,7 +57,7 @@ Giả định thực tế cho một tập hồ sơ 8000 dòng với các Section
 # Phase 2: Environment Readiness & Data Prototyping Framework
 
 ## 1. Mục tiêu (Objective)
-Sau khi hoàn thành Phase 1 (Discovery & Milestone), Phase 2 tập trung vào việc hiện thực hóa các kịch bản kiểm thử (Test Scenarios). Mục tiêu là đảm bảo mọi "điểm chạm" logic trong tài liệu đều có dữ liệu đối soát thực tế trước khi bắt đầu giai đoạn Coding.
+Sau khi hoàn thành Phase 1 (Discovery & Milestone), Phase 2 tập trung vào việc hiện thực hóa các kịch bản kiểm thử (Test Scenarios). Mục tiêu là đảm bảo mọi "điểm chạm" logic trong tài liệu đều có dữ liệu đối soát thực tế (Ground Truth) trước khi bắt đầu giai đoạn Coding.
 
 ---
 
@@ -68,10 +68,8 @@ Thời gian tái hiện ($T_{reproduce}$) được tính dựa trên độ sâu 
 $$T_{reproduce} = \sum (N_{root} \times T_{base}) + \sum (N_{deep} \times T_{base} \times D)$$
 
 ### Trong đó:
-* **$N_{root}$**: Các Section có cấu trúc nông (Cấp 1-3). Logic đơn giản, dễ tạo Data.
-* **$N_{deep}$**: Các Section có cấu trúc sâu (Cấp > 4). Logic lồng ghép, nhiều điều kiện ràng buộc.
-* **$T_{base}$**: Thời gian cơ bản để thiết lập 1 bộ Data mẫu (Khuyên dùng: $1.0h$).
-* **$D$ (Depth Factor)**: Hệ số nhân độ sâu (Gánh nặng của việc truy vết điều kiện If-Else):
+* **$T_{base}$**: Thời gian cơ sở để thiết lập 1 bộ Data mẫu (Khuyên dùng: $1.0h$).
+* **$D$ (Depth Factor)**: Hệ số nhân độ sâu (Gánh nặng truy vết logic lồng):
     * Cấp 4: $D = 1.25$
     * Cấp 5: $D = 1.5$
     * Cấp 6: $D = 1.65$
@@ -79,28 +77,32 @@ $$T_{reproduce} = \sum (N_{root} \times T_{base}) + \sum (N_{deep} \times T_{bas
 
 ---
 
-## 3. Case Study: Ước lượng thực tế cho 21 Sections
+## 3. Bảng tính toán chi tiết (Case Study: 21 Sections)
 
-Dựa trên danh sách 21 điểm ảnh hưởng (Impact Points) phân bổ từ Chương 5 đến Chương 8.8:
+Dưới đây là bảng phân rã thời gian cho 21 điểm ảnh hưởng (Impact Points) được xác định từ tài liệu nghiệp vụ:
 
-### Phân rã định lượng:
-
-| Phân nhóm Section | Số lượng | Công thức ($T_{base} = 1.0h$) | Kết quả |
-| :--- | :---: | :--- | :--- |
-| **Nhánh nông (Cấp 2-3)** | 8 | $8 \times 1.0h$ | 8.0h |
-| **Nhánh trung bình (Cấp 4)** | 1 | $1 \times 1.0h \times 1.25$ | 1.25h |
-| **Nhánh sâu (Cấp 5)** | 1 | $1 \times 1.0h \times 1.5$ | 1.5h |
-| **Nhánh cực sâu (Cấp 7)** | 1 | $1 \times 1.0h \times 1.75$ | 1.75h |
-
-**=> Tổng cộng ($T_{reproduce}$): ~12.5 Giờ làm việc.**
+| Section Index | Cấp lồng | Phân loại | Công thức tính ($T_{base} = 1.0h$) | Kết quả (Giờ) |
+| :--- | :---: | :--- | :--- | :---: |
+| **Chương 5.4** | 2 | $N_{root}$ | $1.0h$ | 1.0 |
+| **Chương 7.5** | 2 | $N_{root}$ | $1.0h$ | 1.0 |
+| **Chương 8.1.1** | 3 | $N_{root}$ | $1.0h$ | 1.0 |
+| **Chương 8.3.28** | 3 | $N_{root}$ | $1.0h$ | 1.0 |
+| **Chương 8.5.1** | 3 | $N_{root}$ | $1.0h$ | 1.0 |
+| **Chương 8.5.2** | 3 | $N_{root}$ | $1.0h$ | 1.0 |
+| **Chương 8.5.3** | 3 | $N_{root}$ | $1.0h$ | 1.0 |
+| **Chương 8.8.3** | 3 | $N_{root}$ | $1.0h$ | 1.0 |
+| **Chương 8.8.2.5** | 4 | $N_{deep}$ | $1.0h \times 1.25$ (Hệ số $D$) | 1.25 |
+| **Chương 8.5.2.2.3**| 5 | $N_{deep}$ | $1.0h \times 1.5$ (Hệ số $D$) | 1.5 |
+| **Chương 8.6.x (Core)**| 7 | $N_{deep}$ | $1.0h \times 1.75$ (Hệ số $D$) | 1.75 |
+| **TỔNG CỘNG** | | | | **12.5 Giờ** |
 
 ---
 
 ## 4. Ý nghĩa chiến lược (Strategic Value)
 
-1. **Khắc phục sự mơ hồ**: Việc dành ~12.5h để setup data giúp làm sáng tỏ các điểm "mù" trong tài liệu mà việc đọc thuần túy không thể phát hiện.
-2. **Loại bỏ "Bottleneck"**: Khi Junior bắt đầu code, họ đã có sẵn môi trường và data chuẩn. Điều này triệt tiêu thời gian chờ đợi (Idle time) và giảm thiểu rủi ro lỗi Logic cha (Parent Logic errors).
-3. **Chỉ số Seniority**: Khả năng định lượng thời gian setup dựa trên cấu trúc lồng ($Depth$) chứng minh năng lực quản trị rủi ro và am hiểu hệ thống sâu sắc của người lập kế hoạch.
+1. **Minh bạch hóa chi phí ngầm**: Việc tạo dữ liệu cho cấu trúc lồng sâu (Deeply nested) không đơn giản là nhập liệu, mà là giải quyết các ràng buộc dữ liệu (Constraint Solving). Bảng tính trên giúp PM hiểu rõ tại sao "sửa 1 dòng" lại cần thời gian setup lớn.
+2. **Loại bỏ rủi ro "Block"**: Khi có sẵn Data Prototyping, giai đoạn Unit Test sẽ diễn ra liên tục, không bị ngắt quãng bởi việc thiếu dữ liệu kiểm thử.
+3. **Nâng cao chất lượng Code**: Dữ liệu chuẩn giúp Junior nhận diện lỗi ngay khi thực hiện thay đổi, giảm 50% thời gian Fix Bug ở các giai đoạn sau.
 
 ---
 *Documented by Nhat Ma*
